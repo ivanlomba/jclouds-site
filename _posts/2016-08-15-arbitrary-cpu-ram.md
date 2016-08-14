@@ -10,9 +10,7 @@ title: Arbitrary CPU and RAM supported in the ComputeService
 As part of a [Google Summer of Code](https://developers.google.com/open-source/gsoc/) project has been added a feature to allow users to set manually specific values of CPU and RAM.
 <!--more-->
 
-The new abstraction allows to use directly arbitrary values of CPU and RAM specified by users or both (when supported) hardware profiles and custom hardwares. The previous Compute Service abstraction assumed that all providers had hardware profiles, providing a fixed configuration with a fixed (hardcoded) list just to conform the interface, but some providers such as  [Abiquo](http://www.abiquo.com/) or [CloudSigma](https://www.cloudsigma.com/) do not have the hardware profiles concept.
-
-The previous Compute Service abstraction assumed that all providers had hardware profiles, but some providers such as [Abiquo](http://www.abiquo.com/) or [CloudSigma](https://www.cloudsigma.com/) do not have the hardware profiles concept and the previous implementation provides a fixed configuration with a fixed (hardcoded) list just to conform the interface. The new abstraction allows to use both (when supported) hardware profiles and custom hardwares.
+The previous Compute Service abstraction assumed that all providers had hardware profiles, but some providers such as [Abiquo](http://www.abiquo.com/) or [CloudSigma](https://www.cloudsigma.com/) do not have the hardware profiles concept and the previous implementation provides a fixed configuration with a fixed (hardcoded) list just to conform the interface. The new implementation allows to use custom hardwares or both (when supported) hardware profiles and custom hardwares.
 
 ### Providers supported
 There are several providers that support arbitrary values of CPU and RAM like Abiquo, Cloud Sigma, Docker, Google Compute Engine, etc. The first available providers supported by the new feature are:
