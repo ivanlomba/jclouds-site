@@ -48,7 +48,7 @@ Optionally you can specify also the disk size. In ProfitBricks disk is mandatory
 
 {% highlight Java %}
 Template template = templateBuilder
-    .hardwareId("automatic:cores=2;ram=4096;disk=10000")
+    .hardwareId("automatic:cores=2;ram=4096;disk=100")
     .build()
 compute.createNodesInGroup("jclouds", 1, template);
 {% endhighlight %}
@@ -64,13 +64,13 @@ Template template = templateBuilder
 compute.createNodesInGroup("jclouds", 1, template);
 {% endhighlight %}
 
-If using ProfitBricks, remember that you need to specify disk size (volume):
+If using ProfitBricks, remember that you need to specify disk size, using minDisk:
 
 {% highlight Java %}
 Template template = templateBuilder
     .minCores(2)
     .minRam(4096)
-    .volume(new VolumeImpl(10000, true, true))
+    .minDisk(100)
     .build();
 compute.createNodesInGroup("jclouds", 1, template);
 {% endhighlight %}
