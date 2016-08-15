@@ -44,7 +44,7 @@ Template template = templateBuilder
 compute.createNodesInGroup("jclouds", 1, template);
 {% endhighlight %}
 
-Optionally you can specify also the disk size. In ProfitBricks disk is mandatory, you need to specify it to create custom machines.
+In providers that configure disks based on the volume information provided in the hardware profile you have to specify also the disk size, like in ProfitBricks, where disk is mandatory, you need to specify it to create custom machines:
 
 {% highlight Java %}
 Template template = templateBuilder
@@ -64,7 +64,7 @@ Template template = templateBuilder
 compute.createNodesInGroup("jclouds", 1, template);
 {% endhighlight %}
 
-If using ProfitBricks, remember that you need to specify disk size, using minDisk:
+In providers that need to specify disk, using minDisk:
 
 {% highlight Java %}
 Template template = templateBuilder
