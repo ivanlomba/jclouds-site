@@ -18,7 +18,7 @@ There are several providers that support arbitrary values of CPU and RAM like Do
 * [Google Compute Engine](https://cloud.google.com/compute/)
 * [ProfitBricks](https://www.profitbricks.com/)
 
-To configure the new feature in other providers add a bind() to the ArbitraryCpuRamTemplateBuilderImpl class at the provider's context module:
+To configure the new feature in other providers add a bind() to the `ArbitraryCpuRamTemplateBuilderImpl` class at the provider's context module:
 
 {% highlight Java %}
 bind(TemplateBuilderImpl.class).to(ArbitraryCpuRamTemplateBuilderImpl.class);
@@ -26,11 +26,11 @@ bind(TemplateBuilderImpl.class).to(ArbitraryCpuRamTemplateBuilderImpl.class);
 
 Also is necessary to modify the function that transform a node from the provider model to the portable model of jclouds, to include the new automatic hardwareId (if apply).
 
-### How to create custom hardwares
-There are two ways to create a custom hardware: setting in on the hardwareId or specifying cores and ram values using minCores and minRam.
+### How to use custom hardwares
+There are two ways to use a custom hardware: setting in on the hardwareId or specifying cores and ram values using minCores and minRam.
 
 
-#### Creating a custom hardware using hardwareId
+#### Custom hardware using hardwareId
 To set CPU and RAM with hardwareId you have to set the hardwareId using template builder with the format:
 
 `automatic:cores=2;ram=4096`
@@ -44,7 +44,7 @@ Template template = templateBuilder
 compute.createNodesInGroup("jclouds", 1, template);
 {% endhighlight %}
 
-In providers that configure disks based on the volume information provided in the hardware profile you have to specify also the disk size, like in ProfitBricks, where disk is mandatory, you need to specify it to create custom machines:
+In providers that configure disks based on the volume information provided in the hardware profile you have to specify also the disk size, like in ProfitBricks, where disk is mandatory, you need to specify it to use custom machines:
 
 {% highlight Java %}
 Template template = templateBuilder
@@ -53,7 +53,7 @@ Template template = templateBuilder
 compute.createNodesInGroup("jclouds", 1, template);
 {% endhighlight %}
 
-#### Creating a custom hardware using minCores and minRam
+#### Custom hardware using minCores and minRam
 To set up custom hardwares using minRam and minCores you have to set them using template builder.
 
 {% highlight Java %}
@@ -82,6 +82,7 @@ As some providers support also hardware profiles, and using them provides hardwa
 * **Support other providers**: add support for other providers such as [ElasticHosts](https://www.elastichosts.com/) and [Docker](https://www.docker.com/).
 * **Improve AutomaticHardwareSpec**: improve the AutomaticHardwareSpec with specific parsers for every parameter in order to support more custom parameters and some fields, like bootDisk and durable (part of volumes), that are currently hardcoded to true.
 * **Usage examples of the new features**: create examples of the new features in the jclouds-examples repo.
+* **Custom TemplateBuilderImpl for ProfitBricks**: add a custom implementation of the TemplateBuilderImpl to fail early when users don't set the minDisk.
 
 
 ### Special thanks
