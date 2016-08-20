@@ -10,27 +10,17 @@ title: Arbitrary CPU and RAM supported in the ComputeService
 As part of a [Google Summer of Code](https://developers.google.com/open-source/gsoc/) project has been added a feature to allow users to set manually specific values of CPU and RAM.
 <!--more-->
 
-The previous Compute Service abstraction assumed that all providers had hardware profiles, but some providers such as [ProfitBricks](https://www.profitbricks.com/) or [ElasticHosts](https://www.elastichosts.com/) do not have the hardware profiles concept and the previous implementation provides a fixed configuration with a fixed (hardcoded) list just to conform the interface. The new implementation allows to use custom hardwares or both (when supported) hardware profiles and custom hardwares.
+The previous Compute Service abstraction assumed that all providers had hardware profiles, a list of profiles describing different cpu, memory and disk configurations that can be used to run a node. Some providers, such as [ProfitBricks](https://www.profitbricks.com/) or [ElasticHosts](https://www.elastichosts.com/), do not have the hardware profiles concept and the previous implementation provides a fixed configuration with a fixed (hardcoded) list just to conform the interface. The new implementation allows to use custom hardwares or both (when supported) hardware profiles and custom hardwares.
 
-### Providers supported
-There are several providers that support arbitrary values of CPU and RAM like Docker, ElasticHosts, Google Compute Engine, etc. The first available providers supported by the new feature are:
-
-* [Google Compute Engine](https://cloud.google.com/compute/)
-* [ProfitBricks](https://www.profitbricks.com/)
-
-To configure the new feature in other providers add a bind() to the `ArbitraryCpuRamTemplateBuilderImpl` class at the provider's context module:
-
-{% highlight Java %}
-bind(TemplateBuilderImpl.class).to(ArbitraryCpuRamTemplateBuilderImpl.class);
-{% endhighlight %}
-
-Also is necessary to modify the function that transform a node from the provider model to the portable model of jclouds, to include the new automatic hardwareId (if apply).
+Note that using hardware profiles provides hardware optimization or in some cases cheaper pricings.
 
 ### How to use custom hardwares
 There are two ways to use a custom hardware: setting in on the hardwareId or specifying cores and ram values using minCores and minRam.
 
-
 #### Custom hardware using hardwareId
+
+When user set the hardwareId, the Template Builder first check if the provided hardwareId corresponds with an existent hardware profile, and if it corresponds, it would use it. In case that the provided hardwareId do not match with an existing hardware profile and have the automatic hardwareId format, it would use a custom hardware.
+
 To set CPU and RAM with hardwareId you have to set the hardwareId using template builder with the format:
 
 `automatic:cores=2;ram=4096`
@@ -54,6 +44,9 @@ compute.createNodesInGroup("jclouds", 1, template);
 {% endhighlight %}
 
 #### Custom hardware using minCores and minRam
+
+When user set minCores and minRam, first the template builder checks if a hardware profile matches with the provided minRam and minCores. If not, the templateBuilder will use the automatic hardware.
+
 To set up custom hardwares using minRam and minCores you have to set them using template builder.
 
 {% highlight Java %}
@@ -64,7 +57,7 @@ Template template = templateBuilder
 compute.createNodesInGroup("jclouds", 1, template);
 {% endhighlight %}
 
-In providers that need to specify disk, using minDisk:
+In providers that need to specify disk, set also minDisk:
 
 {% highlight Java %}
 Template template = templateBuilder
@@ -75,7 +68,19 @@ Template template = templateBuilder
 compute.createNodesInGroup("jclouds", 1, template);
 {% endhighlight %}
 
-As some providers support also hardware profiles, and using them provides hardware optimization or in some cases cheaper pricings, when a provider support both, Template Builder first will look if some hardware profile matches the specified values.
+### Providers supported
+There are several providers that support arbitrary values of CPU and RAM like Docker, ElasticHosts, Google Compute Engine, etc. The first available providers supported by the new feature are:
+
+* [Google Compute Engine](https://cloud.google.com/compute/)
+* [ProfitBricks](https://www.profitbricks.com/)
+
+To configure the new feature in other providers add a bind() to the `ArbitraryCpuRamTemplateBuilderImpl` class at the provider's context module:
+
+{% highlight Java %}
+bind(TemplateBuilderImpl.class).to(ArbitraryCpuRamTemplateBuilderImpl.class);
+{% endhighlight %}
+
+Also is necessary to modify the function that transform a node from the provider model to the portable model of jclouds, to include the new automatic hardwareId (if apply).
 
 ### Further development
 
