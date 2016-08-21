@@ -43,6 +43,19 @@ Template template = templateBuilder
 compute.createNodesInGroup("jclouds", 1, template);
 {% endhighlight %}
 
+To help building the automatic hardwareId, the `automaticHardwareIdSpecBuilder` utility creates an automaticHardwareId string with the provided values of cores, ram and optional disk size.
+
+{% highlight Java %}
+Template template = templateBuilder
+    .hardwareId(AutomaticHardwareIdSpec
+        .automaticHardwareIdSpecBuilder(2.0, 4096, Optional.<Float>absent())
+        .toString()))
+    .build()
+compute.createNodesInGroup("jclouds", 1, template);
+{% endhighlight %}
+
+
+
 #### Custom hardware using minCores and minRam
 
 When user set minCores and minRam, first the template builder checks if a hardware profile matches with the provided minRam and minCores. If not, the templateBuilder will use the automatic hardware.
